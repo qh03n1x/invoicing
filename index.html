@@ -77,16 +77,16 @@
         </div>
 
         <div class="details">
-            <div>Invoice No: <span class="fw-semibold" id="invoice"></span></div>
-            <div>Date: <span class="fw-semibold" id="date"></span></div>
+            <div>Invoice No: <span class="font-monospace" id="invoice"></span></div>
+            <div>Date: <span class="font-monospace" id="date"></span></div>
         </div>
 
         <div class="details">
-            <div>Name: <span class="fw-semibold" id="name"></span></div>
+            <div>Name: <span class="font-monospace" id="name"></span></div>
         </div>
 
         <div class="details">
-            <div>Address: <span class="fw-semibold" id="address"></span></div>
+            <div>Address: <span class="font-monospace" id="address"></span></div>
         </div>
 
         <table class="table table-bordered">
@@ -102,10 +102,10 @@
             <tbody>
                 <tr>
                     <th scope="row" class="text-center">1.</th>
-                    <td class="fw-semibold" id="product"></td>
+                    <td class="font-monospace" id="product"></td>
                     <td class="text-center">1</td>
-                    <td class="fw-semibold amount"></td>
-                    <td class="fw-semibold amount"></td>
+                    <td class="font-monospace amount"></td>
+                    <td class="font-monospace amount"></td>
                 </tr>
                 <tr>
                     <th scope="row" class="text-center"></th>
@@ -132,7 +132,7 @@
             <tfoot>
                 <tr>
                     <td colspan="4" class="text-end">Total Amount</td>
-                    <td><span class="fw-semibold amount"></span></td>
+                    <td><span class="font-monospace amount"></span></td>
                 </tr>
             </tfoot>
         </table>
@@ -214,20 +214,37 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script>
+        // const testData = {
+        //     name: "AMAN JAISWAL",
+        //     address: "Gangwal bazar",
+        //     product: "Realme C65 5G 6/128\n 863525073275291\n 863525073275283\n Finance by TVS Credit\n DP - ₹3896",
+        //     total_amount: 14999,
+        //     date: "2024-08-10",
+        //     invoice_no: "77",
+        // }
+
         window.addEventListener('load', function () {
             const modalBox = new bootstrap.Modal(document.getElementById('formModal'));
             const editButton = document.getElementById('editInvoice');
             const printButton = document.getElementById('printInvoice');
             const generateInvoiceButton = document.getElementById('generateInvoice');
+            const invoiceForm = document.getElementById('invoiceForm');
+
+            // for (const [key, value] of Object.entries(testData)) {
+            //     const field = document.getElementById(`id_${key}`);
+            //     if (field) {
+            //         field.value = value;
+            //         field.dispatchEvent(new Event('change', { bubbles: true }));
+            //     }
+            // }
 
             modalBox.show();
 
             generateInvoiceButton?.addEventListener('click', function () {
-                const form = document.getElementById('invoiceForm');
-                if (form.checkValidity()) {
+                if (invoiceForm.checkValidity()) {
                     modalBox.hide();
                 } else {
-                    form.reportValidity();
+                    invoiceForm.reportValidity();
                 }
             });
 
