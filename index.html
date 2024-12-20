@@ -179,7 +179,6 @@
                         <div class="col-12">
                             <label for="id_product" class="form-label">Product</label>
                             <textarea class="form-control" id="id_product" name="product" rows="6"
-                                ondblclick="this.value = 'Finance by TVS Credit\nDP - ₹'"
                                 onchange="document.getElementById('product').innerHTML = value.replace(/\n/g, '<br>')"
                                 required></textarea>
                         </div>
@@ -215,6 +214,10 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script>
+        defaultData = {
+            product: "Finance by TVS Credit\nDP - ₹",
+        }
+
         // const testData = {
         //     name: "AMAN JAISWAL",
         //     address: "Gangwal bazar",
@@ -231,13 +234,13 @@
             const generateInvoiceButton = document.getElementById('generateInvoice');
             const invoiceForm = document.getElementById('invoiceForm');
 
-            // for (const [key, value] of Object.entries(testData)) {
-            //     const field = document.getElementById(`id_${key}`);
-            //     if (field) {
-            //         field.value = value;
-            //         field.dispatchEvent(new Event('change', { bubbles: true }));
-            //     }
-            // }
+            for (const [key, value] of Object.entries(defaultData)) {
+                const field = document.getElementById(`id_${key}`);
+                if (field) {
+                    field.value = value;
+                    // field.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            }
 
             modalBox.show();
 
