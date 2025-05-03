@@ -260,7 +260,7 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script>
-        const testData = {
+        /*const testData = {
             name: "John Doe",
             address: "Gangwal bazar",
             productContent: "Realme C65 5G 6/128\n 863525073595291\n 8635250732752556",
@@ -268,7 +268,7 @@
             downpayment: 3896,
             date: "2024-08-10",
             invoice_no: "77",
-        }
+        }*/
 
         window.addEventListener('load', function () {
             const modalBox = new bootstrap.Modal(document.getElementById('formModal'));
@@ -277,13 +277,13 @@
             const generateInvoiceButton = document.getElementById('generateInvoice');
             const invoiceForm = document.getElementById('invoiceForm');
 
-            for (const [key, value] of Object.entries(testData)) {
+            /*for (const [key, value] of Object.entries(testData)) {
                 const field = document.getElementById(`id_${key}`);
                 if (field) {
                     field.value = value;
                     field.dispatchEvent(new Event('change', { bubbles: true }));
                 }
-            }
+            }*/
 
             modalBox.show();
 
