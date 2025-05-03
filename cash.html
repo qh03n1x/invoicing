@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=1024, initial-scale=1.0">
+    <title>Invoice Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        .invoice-container {
+            width: 210mm;
+            min-height: 250mm;
+            padding: 30px;
+            margin: auto;
+            position: relative;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 17px;
+            margin-bottom: 10px;
+            font-weight: bolder;
+        }
+
+        .invoice_type {
+            border: 0.5px solid #000;
+            border-radius: 20px;
+            font-size: 14px;
+            padding: 0.5px 4px 0px 4px;
+        }
+
+        tbody tr {
+            height: 100px;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-25deg);
+            opacity: 0.08;
+            font-size: 64px;
+            color: #000;
+            font-weight: bold;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .authorized-signature-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .stamp {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%) translateY(-15%) rotate(-25deg);
+            pointer-events: none;
+            filter: grayscale(100%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="invoice-container">
+        <div class="watermark">SAT1SH ELECTR0NICS</div>
+
+        <div class="details">
+            <div>GSTIN: 09BVAPJ4455J1ZE</div>
+            <div class="invoice_type">Tax Invoice</div>
+            <div>Mob.: 8081013722</div>
+        </div>
+
+        <div class="text-center">
+            <h2 class="text-dark fw-bolder">SATISH ELECTRONICS</h2>
+        </div>
+
+        <div class="text-center">
+            <h6 class="fw-bolder">Gangwal Bazar, Bahraich, Uttar Pradesh, 271821</h6>
+        </div>
+
+        <div class="details">
+            <div>Invoice No: <span id="invoice"></span></div>
+            <div>Date: <span id="date"></span></div>
+        </div>
+
+        <div class="details">
+            <div>Name: <span id="name"></span></div>
+        </div>
+
+        <div class="details">
+            <div>Address: <span id="address"></span></div>
+        </div>
+
+        <table class="table table-bordered fw-bolder">
+            <thead>
+                <tr class="text-center">
+                    <th scope="col">S.No</th>
+                    <th scope="col" style="width:60%">Description of Goods</th>
+                    <th scope="col">Qty</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row" class="text-center">1.</th>
+                    <td id="product"></td>
+                    <td class="text-center">1</td>
+                    <td class="font-monospace amount"></td>
+                    <td class="font-monospace amount"></td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text-center"></th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text-center"></th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text-center"></th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="text-end">Total Amount</td>
+                    <td><span class="amount"></span></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="invoice-footer">
+            <div class="text-end">
+                <p style="font-family: 'Courier New', Courier, monospace; font-weight: 900; font-size: 20px;">By SATISH
+                    ELECTRONICS</p>
+                <div class="authorized-signature-container">
+                    <p class="opacity-25 mt-3">Authorized Signature</p>
+                    <img src="stamp.png" width="120px" height="120px" class="stamp">
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <button type="button" class="btn btn-secondary" id="editInvoice">Edit</button>
+            <button type="button" class="btn btn-secondary" id="printInvoice">Print</button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="formModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="formLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="formLabel">Generate Invoice</h1>
+                </div>
+
+                <div class="modal-body">
+                    <form method="post" class="row g-3" id="invoiceForm">
+                        <div class="col-6">
+                            <label for="id_name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="id_name" name="name"
+                                onchange="document.getElementById('name').innerHTML = document.title = value" required>
+                        </div>
+
+                        <div class="col-6">
+                            <label for="id_address" class="form-label">Address</label>
+                            <input type="text" class="form-control" name="address" id="id_address"
+                                onchange="document.getElementById('address').innerHTML = value" required>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="id_product" class="form-label">Product</label>
+                            <textarea class="form-control" id="id_product" name="product" rows="6"
+                                onchange="document.getElementById('product').innerHTML = value.replace(/\n/g, '<br>')"
+                                required></textarea>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="id_total_amount" class="form-label">Total Amount</label>
+                            <input type="number" class="form-control" name="total_amount" id="id_total_amount"
+                                onchange="updateAmount(this.value)" required>
+                        </div>
+
+                        <div class="col-6">
+                            <label for="id_date" class="form-label">Date</label>
+                            <input type="date" class="form-control" name="date" id="id_date"
+                                onchange="document.getElementById('date').innerHTML = value" required>
+                        </div>
+
+                        <div class="col-6">
+                            <label for="id_invoice_no" class="form-label">Invoice No.</label>
+                            <input type="text" class="form-control" name="invoice_no" id="id_invoice_no"
+                                onchange="document.getElementById('invoice').innerHTML = value" required>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="generateInvoice">Generate</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script>
+        window.addEventListener('load', function () {
+            const modalBox = new bootstrap.Modal(document.getElementById('formModal'));
+            const editButton = document.getElementById('editInvoice');
+            const printButton = document.getElementById('printInvoice');
+            const generateInvoiceButton = document.getElementById('generateInvoice');
+            const invoiceForm = document.getElementById('invoiceForm');
+
+            modalBox.show();
+
+            generateInvoiceButton?.addEventListener('click', function () {
+                if (invoiceForm.checkValidity()) {
+                    modalBox.hide();
+                } else {
+                    invoiceForm.reportValidity();
+                }
+            });
+
+            editButton?.addEventListener('click', function () {
+                modalBox.show();
+            });
+
+            printButton?.addEventListener('click', function () {
+                editButton.style.display = 'none';
+                printButton.style.display = 'none';
+                window.print();
+            });
+        });
+
+        function updateAmount(value) {
+            const elements = document.getElementsByClassName('amount');
+            Array.from(elements).forEach(element => {
+                element.innerHTML = `₹${value}`;
+            });
+        }
+    </script>
+</body>
+
+</html>
